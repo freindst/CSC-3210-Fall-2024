@@ -1,4 +1,5 @@
 #lang racket
+(require "parser.rkt")
 ;blaaade
 (define var-scope
   '((a 1) (b 2) (x 5))
@@ -30,3 +31,24 @@
 ;      )
 ;    )
 ;  )
+
+(define reverse-parser
+  (lambda (parsed-code)
+    (cond
+      ((null? parsed-code) '())
+      ((list? (car parsed-code)) (cons (reverse-parser (car parsed-code)) (reverse-parser (cdr parsed-code))))
+      ((eq? (car parsed-code) 'app-exp)
+       (append (list 'call (reverse-parser (cadr parsed-code)))
+               (reverse-parser (caddr parsed-code))))
+      ((eq? (car parsed-code) 'func-exp)
+       (append (list 'function (list (cadr (cadr parsed-code)))) (reverse-parser (cadr (caddr parsed-code)))
+               ))
+      ((eq? (car parsed-code) 'body-exp) (reverse-parser (cdr parsed-code)))
+      ((eq? (car parsed-code) 'var-exp) (reverse-parser (cdr parsed-code)))
+      ((eq? (car parsed-code) 'num-exp) (reverse-parser (cdr parsed-code)))
+      (else (cons (car parsed-code) (reverse-parser (cdr parsed-code))))
+      )
+    )
+  )
+
+(reverse-parser (blaaade-parser '(call (function (x) x) 8)))

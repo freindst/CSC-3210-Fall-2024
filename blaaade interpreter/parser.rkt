@@ -7,6 +7,8 @@
 (define blaaade-parser
   (lambda (code)
     (cond
+      ;this is the definition of num-exp
+      ((number? code) (list 'num-exp code))
       ;this is the definition of var-exp
       ((symbol? code) (list 'var-exp code))
       ;this is the definition of functin-exp
@@ -22,9 +24,28 @@
        (list 'app-exp
              (blaaade-parser (cadr code))
              (blaaade-parser (caddr code))))
+      ;this is the definition of math-exp
+      ;((1+1) + 2) -> (math-exp (num-exp 1) (op +) (num-exp 2))
+      ((math-op? (cadr code))
+       (list 'math-exp (blaaade-parser (car code))
+             (list 'op (cadr code))
+             (blaaade-parser (caddr code))))
       (else (println "blaaade's parser is confused"))
       )
     )
   )
 
+(define math-op?
+  (lambda (op)
+    (cond
+      ((eq? op '+) #t)
+      ((eq? op '-) #t)
+      ((eq? op '/) #t)
+      ((eq? op '*) #t)
+      ((eq? op '%) #t)
+      (else #f)
+      )
+    )
+  )
+    
 (provide (all-defined-out))
