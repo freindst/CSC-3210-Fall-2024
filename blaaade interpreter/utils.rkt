@@ -42,4 +42,16 @@
     )
   )
 
+;lst1 = (x y z) lst2 = (a b c)) -> ((x a) (y b) (z c))
+(define combination
+  (lambda (lst1 lst2)
+    (cond
+      ((null? lst1) '())
+      (else (cons
+             (list (car lst1) (car lst2))
+             (combination (cdr lst1) (cdr lst2))))
+      )
+    )
+  )
+
 (provide (all-defined-out))
