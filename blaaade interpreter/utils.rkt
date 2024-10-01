@@ -23,11 +23,20 @@
 ;return true if the scope has the variable name, otherwise return false
 (define scope-contains-name?
   (lambda (varname scope)
-    (
-     cond
+    (cond
       ((null? scope) #f)
       ((eq? (car (car scope)) varname) #t)
       (else (scope-contains-name? varname (cdr scope)))
+      )
+    )
+  )
+
+(define env-contains-name?
+  (lambda (varname env)
+    (cond
+      ((null? env) #f)
+      ((scope-contains-name? varname (car env)) #t)
+      (else (env-contains-name? varname (cdr env)))
       )
     )
   )

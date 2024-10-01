@@ -3,25 +3,29 @@
 (require "utils.rkt")
 (require "interpreter.rkt")
 
-(define var-scope
-  '((a 1) (b 2) (x 5))
+(define var-env
+  '(((a 1) (b 2) (x 5)))
   )
-
-
 
 (define execute
   (lambda (code)
-    (blaaade-interpreter (blaaade-parser code) var-scope)
+    (blaaade-interpreter (blaaade-parser code) var-env)
     )
   )
 
-;(blaaade-interpreter (blaaade-parser '(call (function (x) x) y)) var-scope)
-;(execute '(call (function (x) x) (call (function (z) z) 2)))
 
-;(call (function (x) x) a)
-;(call (function (x) x) 2) -> 2 numeric expression
-;(1 + 1) -> math expression
+;(execute '(call (function (x) (x == 1)) a))
 
-;(math-exp (num-exp 1) (op +) (num-exp 2))
-(execute '(call (function (x + 1) x) a))
 ;(blaaade-interpreter (blaaade-parser '(1 + 2)) var-scope)
+;(blaaade-parser (x == 1)) -> (boolean-exp (var-exp x) (op ==) (num-exp 1)
+
+;(ask (a == 1) b x) -> (ask-exp (boolean-exp (var-exp a) (op ==) (num-exp 1))
+; (true-exp (var-exp b))
+; (false-exp (var-exp x))
+
+;how to make our interpreter accept more than one parameters in func-exp?
+(blaaade-parser '(call (function (x y z) ((x + y) + z)) (a b c)))
+(execute '(call (function (x y z) ((x + y) + z)) (a b x)))
+;(app-exp (func-exp ((parmas x) (params y)) (body-exp (math-exp
+;(var-exp x) (op +) (var-exp y)) ((var-exp a) (var-exp b)))
+
