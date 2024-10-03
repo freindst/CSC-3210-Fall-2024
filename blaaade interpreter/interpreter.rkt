@@ -25,6 +25,8 @@
          (blaaade-interpreter (cadr (caddr (cadr parsed-code))) local_env)
          )
        )
+      ((eq? (car parsed-code) 'out-exp)
+       (displayln (blaaade-interpreter (cadr parsed-code) env)))
       ;(post-exp (var-exp c) (num-exp 2))
       ;(((f 2))((a 1)(b 2)(x 5))) -> (((c 2)(f 2))((a 1)(b 2)(x 5)))
       ((eq? (car parsed-code) 'post-exp)
@@ -36,7 +38,19 @@
             (cadr (cadr parsed-code))
             (blaaade-interpreter (caddr parsed-code) env))))
              (if (null? env) (list (list new-pair))
-                 (cons (cons (new-pair) (car env)) (cdr env)))))))
+                 (cons (cons new-pair (car env)) (cdr env)))))))
+      ;(queue-exp exp1 exp2 exp3...)
+      ;execute exp1
+      ;execute (queue-exp exp2 exp3 ...)
+      ;execuete (queue-exp exp_n) = > execute exp_n
+      ;'(queue-exp (post-exp (var-exp c) (num-exp 2)) (var-exp c))
+      ((eq? (car parsed-code) 'queue-exp)
+       (cond
+         ((eq? (length parsed-code) 2)
+          (blaaade-interpreter (cadr parsed-code) env))
+         (else
+          (blaaade-interpreter (cadr parsed-code) env)
+          (blaaade-interpreter (cons 'queue-exp (cddr parsed-code)) env))))
       ((eq? (car parsed-code) 'math-exp) (math-exp-helper parsed-code env))
       ;'(ask-exp (boolean-exp (var-exp a) (op ==) (num-exp 1))
       ;(true-exp (var-exp b)) (false-exp (var-exp x)))

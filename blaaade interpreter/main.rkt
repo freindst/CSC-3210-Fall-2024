@@ -13,5 +13,16 @@
     )
   )
 
-;(post-exp (var-exp c) (num-exp 2))
-(blaaade-parser '(post c = 2))       
+;(call (function (x) (
+;queue
+;(post c = 2)
+;(c)
+;) ((a)))
+
+;(que-exp (out-exp (var-exp a)) (out-exp (var-exp b)))
+;(blaaade-parser '(queue (out a) (out b)))
+(execute '(queue (post c = 3) (out c)))
+;post only makes sense in side queue-exp
+;(let ((new_env (defined by post and current env))
+;     (running the rest))
+;post c = 3 is a statement to modify the environment
