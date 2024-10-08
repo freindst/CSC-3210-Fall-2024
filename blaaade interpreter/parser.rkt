@@ -36,6 +36,12 @@
        (list 'post-exp
              (blaaade-parser (cadr code))
              (blaaade-parser (cadddr code))))
+      ((and (eq? (car code) 'put)
+            (eq? (caddr code) '=)
+            (eq? (length code) 4))
+       (list 'put-exp
+             (blaaade-parser (cadr code))
+             (blaaade-parser (cadddr code))))
       ;(queue (post c = 2) c)
       ;(queue-exp (post-exp (var-exp c) (num-exp 2)) (var-exp c))
       ((eq? (car code) 'queue)

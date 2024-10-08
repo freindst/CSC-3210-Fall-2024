@@ -13,19 +13,4 @@
     )
   )
 
-
-;(execute '(call (function (x) (x == 1)) a))
-
-;(blaaade-interpreter (blaaade-parser '(1 + 2)) var-scope)
-;(blaaade-parser (x == 1)) -> (boolean-exp (var-exp x) (op ==) (num-exp 1)
-
-;(ask (a == 1) b x) -> (ask-exp (boolean-exp (var-exp a) (op ==) (num-exp 1))
-; (true-exp (var-exp b))
-; (false-exp (var-exp x))
-
-;how to make our interpreter accept more than one parameters in func-exp?
-(blaaade-parser '(call (function (x y z) ((x + y) + z)) (a b c)))
-(execute '(call (function (x y z) ((x + y) + z)) (a b x)))
-;(app-exp (func-exp ((parmas x) (params y)) (body-exp (math-exp
-;(var-exp x) (op +) (var-exp y)) ((var-exp a) (var-exp b)))
-
+(blaaade-parser '(queue (put a = 3) (out a)))

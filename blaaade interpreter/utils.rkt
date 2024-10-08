@@ -63,4 +63,20 @@
     )
   )
 
+;env = (((c 4) (d 4)) ((a 1) (b 2) (x 5)))
+;update d = 5
+;results env = (((c 4) (d 4)) ((a 1) (b 5) (x 5)))
+(define put-helper
+  (lambda (varname value env)
+    (cond
+      ((or (null? env) (not (env-contains-name? varname env))) (displayln "variable is not in the env"))
+      ((scope-contains-name? varname (car env))
+       (cons (map (lambda (pair)
+              (if (eq? (car pair) varname) (list varname value)
+                  pair)) (car env)) (cdr env)))
+      (else (cons (car env) (put-helper varname value (cdr env))))
+     )
+    )
+  )
+
 (provide (all-defined-out))
