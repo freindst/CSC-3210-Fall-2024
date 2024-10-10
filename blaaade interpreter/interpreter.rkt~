@@ -25,6 +25,36 @@
          (blaaade-interpreter (cadr (caddr (cadr parsed-code))) local_env)
          )
        )
+      ((eq? (car parsed-code) 'out-exp)
+       (displayln (blaaade-interpreter (cadr parsed-code) env)))
+      ((eq? (car parsed-code) 'queue-exp)
+       ;(queue (post c = 3) (post d = 4)) if next exp is post only, do nothing
+       ;otherwise, execute the next next exp in the new scope
+       (cond
+         ((and (eq? (length parsed-code) 2) (eq? (car (cadr parsed-code)) 'post-exp))
+          (println "declare without use"))
+         ((and (eq? (length parsed-code) 2) (eq? (car (cadr parsed-code)) 'put-exp))
+          (println "assign without use"))
+         ((and (eq? (length parsed-code) 2)
+               (blaaade-interpreter (cadr parsed-code) env)))
+         ((eq? (car (cadr parsed-code)) 'post-exp)
+          ;case 1: the variable name is in the env, throw error
+          (if (env-contains-name? (cadr (cadr parsed-code)) env)
+           (println "Cannot declare used variable.")
+          ;case 2: add the kvp to the top scope of the env, run the rest of queue
+           (let ((new-env
+                  ;post-exp (var-exp c)(num-exp 3)
+                  (cons (cons (list (cadr (cadr (cadr parsed-code))) (blaaade-interpreter (caddr (cadr parsed-code)) env)) (car env)) (cdr env))))
+             (blaaade-interpreter (cons 'queue-exp (cddr parsed-code)) new-env))))
+         ((eq? (car (cadr parsed-code)) 'put-exp)
+          (if (env-contains-name? (cadr (cadr (cadr parsed-code))) env)
+              (let ((new-env
+                     (put-helper (cadr (cadr (cadr parsed-code))) (blaaade-interpreter (caddr (cadr parsed-code)) env) env)))
+                (blaaade-interpreter (cons 'queue-exp (cddr parsed-code)) new-env))
+              (displayln "variable is not in the env")))    
+         (else
+          (blaaade-interpreter (cadr parsed-code) env)
+          (blaaade-interpreter (cons 'queue-exp (cddr parsed-code)) env))))
       ((eq? (car parsed-code) 'math-exp) (math-exp-helper parsed-code env))
       ;'(ask-exp (boolean-exp (var-exp a) (op ==) (num-exp 1))
       ;(true-exp (var-exp b)) (false-exp (var-exp x)))

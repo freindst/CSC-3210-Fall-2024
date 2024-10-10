@@ -52,6 +52,17 @@
              (list 'true-exp (blaaade-parser (caddr code)))
              (list 'false-exp (blaaade-parser (cadddr code))))
        )
+      ((eq? (car code) 'wahl)
+       (list 'wahl-exp
+             (blaaade-parser (cadr code))
+             (list 'body-exp
+                   (blaaade-parser (caddr code)))))
+      ((eq? (car code) 'rough)
+       (list 'rough-exp
+             (blaaade-parser (cadr code))
+             (blaaade-parser (caddr code))
+             (blaaade-parser (cadddr code))
+             (list 'body-exp (blaaade-parser (car (cddddr code))))))
       ;this is the definition of math-exp
       ;((1+1) + 2) -> (math-exp (num-exp 1) (op +) (num-exp 2))
       ((eq? (car code) '!)

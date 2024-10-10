@@ -55,6 +55,17 @@
          (else
           (blaaade-interpreter (cadr parsed-code) env)
           (blaaade-interpreter (cons 'queue-exp (cddr parsed-code)) env))))
+      ((eq? (car parsed-code) 'wahl-exp)
+       (if (blaaade-interpreter (cadr parsed-code) env)
+           (if (eq? (car (cadr (caddr parsed-code))) 'queue-exp)
+               (blaaade-interpreter (append (cadr (caddr parsed-code)) (list parsed-code)) env)
+               (blaaade-interpreter (list 'queue-exp (cadr (caddr parsed-code))
+                     parsed-code) env))
+           (displayln "wahl-exp ends here")))
+           ;(blaaade-interpreter (list 'queue-exp
+            ;(cadr (caddr parsed-code))
+            ;parsed-code) env)
+           ;(displayln "wahl-exp ends here")))
       ((eq? (car parsed-code) 'math-exp) (math-exp-helper parsed-code env))
       ;'(ask-exp (boolean-exp (var-exp a) (op ==) (num-exp 1))
       ;(true-exp (var-exp b)) (false-exp (var-exp x)))

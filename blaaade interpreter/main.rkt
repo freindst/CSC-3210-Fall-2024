@@ -13,4 +13,8 @@
     )
   )
 
-(execute '(queue (post c = 3) (put c = 4) (out c)))
+;(wahl-exp (boolean-exp (var-exp a) (op <) (num-exp 10)
+;(body-exp (queue-exp (put-exp (var-exp a) (math-exp (var-exp a) (op +)
+;(num-exp 1)) (out-exp (var-exp a)))))
+(blaaade-parser '(rough (a < 10) 0 (a + 1) (out a)))
+;(execute '(wahl (a < 10) (queue (put a = (a + 1)) (out a))))
