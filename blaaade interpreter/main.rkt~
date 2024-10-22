@@ -13,4 +13,6 @@
     )
   )
 
-(blaaade-parser '(queue (put a = 3) (out a)))
+(execute '(rough a 0 (a < 10) (a + 1) (out a)))
+;initial rough declare a in the environment
+;following rough update a only

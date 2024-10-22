@@ -62,10 +62,42 @@
                (blaaade-interpreter (list 'queue-exp (cadr (caddr parsed-code))
                      parsed-code) env))
            (displayln "wahl-exp ends here")))
-           ;(blaaade-interpreter (list 'queue-exp
-            ;(cadr (caddr parsed-code))
-            ;parsed-code) env)
-           ;(displayln "wahl-exp ends here")))
+      ;initiate a = 0
+      ((eq? (car parsed-code) 'rough-exp)
+       (let* ((pair (list (cadr (cadr parsed-code))
+                          (blaaade-interpreter (caddr parsed-code) env)))
+              (new-env (cons (list pair) env)))
+         (cond
+           ((blaaade-interpreter (cadddr parsed-code) new-env)
+            (blaaade-interpreter
+             (cadr (get-list-item parsed-code 5)) new-env)
+            (let* ((new-new-env
+                    (put-helper (cadr (cadr parsed-code))
+                                (blaaade-interpreter
+                          (get-list-item parsed-code 4) new-env)
+                                new-env)))
+              (blaaade-interpreter
+               (cons 'rough-continue-exp (cdr parsed-code))
+               new-new-env)))
+           (else (displayln "rough-exp terminates here"))
+           )
+         )
+       )
+      ((eq? (car parsed-code) 'rough-continue-exp)
+       (cond
+         ((blaaade-interpreter (cadddr parsed-code) env)
+          (blaaade-interpreter
+             (cadr (get-list-item parsed-code 5)) env)
+          (let* ((new-env
+                    (put-helper (cadr (cadr parsed-code))
+                                (blaaade-interpreter
+                          (get-list-item parsed-code 4) env)
+                                env)))
+              (blaaade-interpreter
+               parsed-code
+               new-env)))
+         (else (displayln "rough-exp-continue terminates here"))
+         ))
       ((eq? (car parsed-code) 'math-exp) (math-exp-helper parsed-code env))
       ;'(ask-exp (boolean-exp (var-exp a) (op ==) (num-exp 1))
       ;(true-exp (var-exp b)) (false-exp (var-exp x)))

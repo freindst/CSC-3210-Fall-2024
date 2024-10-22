@@ -13,8 +13,10 @@
     )
   )
 
-;(wahl-exp (boolean-exp (var-exp a) (op <) (num-exp 10)
-;(body-exp (queue-exp (put-exp (var-exp a) (math-exp (var-exp a) (op +)
-;(num-exp 1)) (out-exp (var-exp a)))))
-(blaaade-parser '(rough (a < 10) 0 (a + 1) (out a)))
-;(execute '(wahl (a < 10) (queue (put a = (a + 1)) (out a))))
+(execute '(rough a 0 (a < 10) (a + 1) (out a)))
+;initial rough declare a in the environment
+;following rough update a only
+;a = 0, output a
+;a = a + 1, output a
+;a = a + 1, output a
+;..repeat 10 times

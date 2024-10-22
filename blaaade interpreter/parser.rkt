@@ -62,7 +62,8 @@
              (blaaade-parser (cadr code))
              (blaaade-parser (caddr code))
              (blaaade-parser (cadddr code))
-             (list 'body-exp (blaaade-parser (car (cddddr code))))))
+             (blaaade-parser (cadr (cdddr code)))
+             (list 'body-exp (blaaade-parser (cadr (cddddr code))))))
       ;this is the definition of math-exp
       ;((1+1) + 2) -> (math-exp (num-exp 1) (op +) (num-exp 2))
       ((eq? (car code) '!)
