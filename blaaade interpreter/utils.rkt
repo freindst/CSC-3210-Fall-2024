@@ -95,4 +95,10 @@
     )
   )
 
+(define var-exp-helper
+  (lambda (parsed-code env)
+    (resolve-env (cadr parsed-code) env)
+    )
+  )
+
 (provide (all-defined-out))

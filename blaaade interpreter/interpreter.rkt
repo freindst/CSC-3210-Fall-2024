@@ -119,13 +119,6 @@
     )
   )
 
-  ;(var-exp a) resolve the value from the variable expression based on env
-(define var-exp-helper
-  (lambda (parsed-code env)
-    (resolve-env (cadr parsed-code) env)
-    )
-  )
-
 (define math-helper
   (lambda (op num1 num2)
     (cond

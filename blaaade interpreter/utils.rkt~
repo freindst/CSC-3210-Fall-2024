@@ -79,4 +79,20 @@
     )
   )
 
+(define get-list-item-helper
+  (lambda (lst index pos)
+    (cond
+      ((null? lst) (displayln "index out of bound"))
+      ((eq? index pos) (car lst))
+      (else (get-list-item-helper (cdr lst) index (+ pos 1)))
+      )
+    )
+  )
+
+(define get-list-item
+  (lambda (lst index)
+    (get-list-item-helper lst index 0)
+    )
+  )
+
 (provide (all-defined-out))
