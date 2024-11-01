@@ -1,2 +1,15 @@
 #lang racket
 (require "utils.rkt")
+(define blaaade-2-interpreter
+  (lambda (parsed-code env)
+    (cond
+      ((null? parsed-code) (displayln "program ends"))
+      ((eq? (car parsed-code) 'num-exp)
+       (let ((return-value (cadr parsed-code))
+             (return-env env))
+      (else (print ""))
+      )
+    )
+  )
+
+(provide (all-defined-out))

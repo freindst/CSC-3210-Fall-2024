@@ -1,7 +1,7 @@
 #lang racket
-(require "parser.rkt")
 (require "utils.rkt")
-(require "interpreter.rkt")
+(require "parser-v2.rkt")
+(require "interpreter-v2.rkt")
 
 (define var-env
   '(((a 1) (b 2) (x 5)))
@@ -13,6 +13,8 @@
     )
   )
 
-(execute '(rough a 0 (a < 10) (a + 1) (out a)))
-;initial rough declare a in the environment
-;following rough update a only
+;(program (num-exp 1))
+(blaaade-parser '(program (1)))
+
+
+(blaaade-2-interpreter (blaaade-parser '(queue (put a = 3) (out a))) var-env)
