@@ -19,7 +19,9 @@
 ;(out-exp return-value return-env)
 ;rest expressions return-value return-env
 ;out-exp what brings into the out-exp: value and env
-(execute '((out 1) (out (2 + 3)) (out b)))
+(define code '((put b = (2 + 3)) (out b)))
+(blaaade-2-parser code)
+(execute code)
 
 ;(blaaade-2-interpreter (blaaade-2-parser '(out 1)) var-env)
 ;1
