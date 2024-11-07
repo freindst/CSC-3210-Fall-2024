@@ -69,13 +69,21 @@
 (define put-helper
   (lambda (varname value env)
     (cond
-      ((or (null? env) (not (env-contains-name? varname env))) (displayln "variable is not in the env"))
+      ((or (null? env) (not (env-contains-name? varname env))) (screen-display "variable is not in the env"))
       ((scope-contains-name? varname (car env))
        (cons (map (lambda (pair)
               (if (eq? (car pair) varname) (list varname value)
                   pair)) (car env)) (cdr env)))
       (else (cons (car env) (put-helper varname value (cdr env))))
      )
+    )
+  )
+
+(define post-helper
+  (lambda (varname value env)
+    (if (env-contains-name? varname env)
+        (screen-display "Variable has been declared.")
+        (cons (list (list varname value)) env))
     )
   )
 
@@ -98,6 +106,72 @@
 (define var-exp-helper
   (lambda (parsed-code env)
     (resolve-env (cadr parsed-code) env)
+    )
+  )
+
+(define screen-display
+  (lambda (msg)
+    (display "*****")
+    (display msg)
+    (displayln "*****")
+    )
+  )
+
+
+(define math-op?
+  (lambda (op)
+    (cond
+      ((eq? op '+) #t)
+      ((eq? op '-) #t)
+      ((eq? op '/) #t)
+      ((eq? op '*) #t)
+      ((eq? op '%) #t)
+      (else #f)
+      )
+    )
+  )
+
+(define bool-op?
+  (lambda (op)
+    (cond
+      ((eq? op '>) #t)
+      ((eq? op '<) #t)
+      ((eq? op '>=) #t)
+      ((eq? op '<=) #t)
+      ((eq? op '==) #t)
+      ((eq? op '!=) #t)
+      ((eq? op '&&) #t)
+      ((eq? op '||) #t)
+      ((eq? op '!) #t)
+      (else #f)
+      )
+    )
+  )
+
+(define math-helper
+  (lambda (op num1 num2)
+    (cond
+      ((eq? op '+) (+ num1 num2))
+      ((eq? op '-) (- num1 num2))
+      ((eq? op '*) (* num1 num2))
+      ((eq? op '/) (/ num1 num2))
+      ((eq? op '%) (modulo num1 num2))
+      (else (println "blaaade do not know this operation"))
+      )
+    )
+  )
+
+(define boolean-helper
+  (lambda (op num1 num2)
+    (cond
+      ((eq? op '>) (> num1 num2))
+      ((eq? op '<) (< num1 num2))
+      ((eq? op '>=) (>= num1 num2))
+      ((eq? op '<=) (<= num1 num2))
+      ((eq? op '==) (eq? num1 num2))
+      ((eq? op '!=) (not (eq? num1 num2)))
+      (else (println "blaaade do not know this operation"))
+      )
     )
   )
 
