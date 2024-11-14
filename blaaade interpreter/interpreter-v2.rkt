@@ -63,6 +63,32 @@
                parsed-code)
               '())))
          (interpreter new-parsed-code env)))
+      ((eq? (car parsed-code) 'josh-exp)
+       (list
+        null
+        (insert-helper
+         (cadr (cadr parsed-code))
+         (caddr parsed-code)
+         env)))
+      ((eq? (car parsed-code) 'call-exp)
+       (println "not implemented yet")
+       )
+      ;(func-exp ((var-exp x)) (exp....)) (num-exp 5))
+      ((eq? (car parsed-code ) 'func-exp)
+       (let*
+           ;lst1 = (x y z) lst2 = (a b c)) -> ((x a) (y b) (z c))
+           ;combine
+           ((new-scope
+            (combination
+             (map cadr (cadr parsed-code))
+             (map (lambda (item) (get-exp-return item env)) (cadddr parsed-code))))
+            (new-env (cons new-scope env))
+            (exp-result (interpreter (caddr parsed-code) new-env))
+            )
+         (list
+          (car exp-result)
+          (cdr (cadr exp-result)))
+         ))
       (else
        (interpreter (cdr parsed-code)
                          (get-exp-env (car parsed-code) env)))

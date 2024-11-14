@@ -87,6 +87,19 @@
     )
   )
 
+;add a new key-value pair to the first scope
+(define insert-helper
+  (lambda (varname value env)
+    (if (env-contains-name? varname env)
+        (screen-display "Variable has been declared.")
+        (if (null? env)
+            (list (list (list varname value)))
+            (cons (cons (list varname value) (car env)) (cdr env))
+            )
+        )
+    )
+  )
+
 (define get-list-item-helper
   (lambda (lst index pos)
     (cond

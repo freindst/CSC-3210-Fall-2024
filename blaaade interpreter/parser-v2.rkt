@@ -32,6 +32,8 @@
              (parser (caddr code))))
          ((eq? (car code) 'wahl)
           (cons 'wahl-exp (map parser (cdr code))))
+         ((eq? (car code) 'call)
+          (list 'call-exp (parser (cadr code)) (map parser (caddr code))))
          (else
        (cons (parser (car code)) (parser (cdr code))))))
       ;
@@ -47,6 +49,14 @@
          (list 'put-exp (cadr code) (parser (cadddr code))))
          ((and (eq? (car code) 'ask))
           (cons 'ask-exp (map parser (cdr code))))
+         ((eq? (car code) 'josh)
+          (list 'josh-exp
+                (parser (cadr code))
+                (list 'func-exp
+                      (map parser (caddr code))
+                      (parser (cadddr code)))
+                )
+          )
          (else
        (cons (parser (car code)) (parser (cdr code))))))
       ((and (eq? (length code) 5) (symbol? (car code)))
