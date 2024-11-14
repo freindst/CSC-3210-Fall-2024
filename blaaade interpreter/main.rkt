@@ -13,9 +13,10 @@
     )
   )
 
-(define code '(rough (i = 0) (i < 9) (i + 1) (out i)) )
+;for i = 0; i < 10; i++
+(define code '(rough (i = 0) (i < 9) (i + 1) ((put i = (i + 1)) (out i))) )
 ;parser should know the answers:
 ;what is an expression?
 ;what is a list of expression?
 (parser code)
-;(execute code)
+(execute code)

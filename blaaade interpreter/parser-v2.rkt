@@ -56,7 +56,7 @@
            'rough-exp
            (parser (cons 'post (cadr code)))
            (parser (caddr code))
-           (parser (append (list 'put (car (cadr code)) (cadr (cadr code))) (cadddr code)))
+           (parser (list 'put (car (cadr code)) '= (cadddr code)))
            (parser (get-list-item code 4)))
           )
        (else

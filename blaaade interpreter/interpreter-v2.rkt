@@ -37,6 +37,32 @@
        (if (get-exp-return (cadr parsed-code) env)
            (interpreter parsed-code (get-exp-env (caddr parsed-code) env))
            (list null env)))
+      ((eq? (car parsed-code) 'rough-exp)
+       (let
+           ((new-env (get-exp-env (cadr parsed-code) env))
+            (new-parsed-code
+             (list
+              'ask-exp
+              (caddr parsed-code)
+              (list
+               (get-list-item parsed-code 4)
+               (cadddr parsed-code)
+               (cons 'rough-nexp (cddr parsed-code)))
+              '()))
+            )
+         (interpreter new-parsed-code new-env))) ;we convert the for-loop to be an if-statement
+      ((eq? (car parsed-code) 'rough-nexp)
+       (let
+           ((new-parsed-code
+             (list
+              'ask-exp
+              (cadr parsed-code)
+              (list
+               (cadddr parsed-code)
+               (caddr parsed-code)
+               parsed-code)
+              '())))
+         (interpreter new-parsed-code env)))
       (else
        (interpreter (cdr parsed-code)
                          (get-exp-env (car parsed-code) env)))
