@@ -71,7 +71,12 @@
          (caddr parsed-code)
          env)))
       ((eq? (car parsed-code) 'call-exp)
-       (println "not implemented yet")
+       (let*
+           ((func-code
+             (resolve-env (cadr (cadr parsed-code)) env))
+            (func-call (append func-code (list (caddr parsed-code))))
+            )
+         (interpreter func-call env))
        )
       ;(func-exp ((var-exp x)) (exp....)) (num-exp 5))
       ((eq? (car parsed-code ) 'func-exp)
@@ -90,8 +95,10 @@
           (cdr (cadr exp-result)))
          ))
       (else
-       (interpreter (cdr parsed-code)
-                         (get-exp-env (car parsed-code) env)))
+       (if (eq? (car parsed-code) 'return-exp)
+           (interpreter (cadr parsed-code) env)
+           (interpreter (cdr parsed-code)
+                         (get-exp-env (car parsed-code) env))))
       )
     )
   )

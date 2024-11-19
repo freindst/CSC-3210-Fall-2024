@@ -14,7 +14,7 @@
   )
 
 ;for i = 0; i < 10; i++
-(define code '(josh square (x y z) (out (x * x))))
+(define code '(josh square (x) (out (x * x))))
 ;josh-exp (var-exp square) (func-exp ((var-exp x) (var-exp y) (var-exp z)) (parsed-code))
 ;we will create a new key-value pair in the top-most variable scope
 ;key = square //function name
@@ -22,11 +22,21 @@
 ;(parser code)
 ;(execute code)
 
-(define code1 '(call square (x)))
+(define code1 '(
+                (josh square (x) (return (x * x)))
+                (put a = (call square (5)))
+                (out a)
+                (out (call square ((call square (2)))))
+                (josh modulo (c d) (out (c % d)))
+                (call modulo (21 11))
+                )
+  
+  )
+
 ;(parser code1)
-(define code2 '(func-exp ((var-exp x)) (out-exp (math-exp (var-exp x) (op *) (var-exp x))) ((num-exp 5))))
-;how?
-(interpreter code2 var-env)
+;(... (return-exp (var-exp 5)))....
+(execute code1)
+;make a return expression
 
 
 

@@ -14,6 +14,8 @@
       ((and (eq? (length code) 2) (symbol? (car code)))
        (cond
          ((eq? (car code) 'out) (list 'out-exp (parser (cadr code))))
+         ((eq? (car code) 'return)
+          (list 'return-exp (parser (cadr code))))
          (else
        (cons (parser (car code)) (parser (cdr code))))
        ))
