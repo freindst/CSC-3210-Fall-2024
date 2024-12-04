@@ -86,6 +86,7 @@
        )
       ;(func-exp ((var-exp x)) (exp....)) (num-exp 5))
       ((eq? (car parsed-code ) 'func-exp)
+       (println parsed-code)
        (let*
            ;lst1 = (x y z) lst2 = (a b c)) -> ((x a) (y b) (z c))
            ;combine
@@ -115,16 +116,14 @@
                     (list
                      'properties (map (lambda (arg) (list arg null)) (car class-definition)))))
             (parsed-constructor (parser (cadr class-definition)))
-            (new-scope
-             (append
-              (combination (car class-definition) (map (lambda (item) (get-exp-return item env)) (get-list-item parsed-code 3)))
-              (list (list 'this this))))
-            (new-env (cons new-scope env))            
-            (return-env (get-exp-env parsed-constructor new-env))
-            (value (resolve-env 'this return-env))
-            (varname (cadr (cadr parsed-code)))
+            (commands
+             (list 'func-exp
+                   (append (parser (car class-definition)) (list '(var-exp this)))
+                   parsed-constructor
+                   (append (get-list-item parsed-code 3) (list (list 'obj-exp this)))
+                   ))
             )
-         (list null (insert-helper varname value env))
+         (interpreter commands env)
        ))
       (else
        (if (eq? (car parsed-code) 'return-exp)

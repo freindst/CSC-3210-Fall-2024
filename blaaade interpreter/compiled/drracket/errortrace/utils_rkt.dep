@@ -1,1 +1,1 @@
-("8.10" tarm64osx ("4a1ef5dd3d87e373f3e18229c8d3749c0396dabc" . "f6784c2fbcee4d37c5614a129896ea8c0bd0e7b8") (collects #"drracket" #"private" #"drracket-errortrace-key.rkt") (collects #"racket" #"main.rkt") (collects #"racket" #"runtime-config.rkt"))
+("8.6" ta6nt ("d7677d8620f77a50b72b186a4d7142c044cb5bd0" . "fa71ef1717f1cf44a53b44586aedb6a8334c6876") (collects #"errortrace" #"errortrace-key.rkt") (collects #"racket" #"main.rkt") (collects #"racket" #"runtime-config.rkt"))

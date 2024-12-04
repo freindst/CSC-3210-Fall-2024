@@ -22,7 +22,7 @@
     (mike lesson
          (department subject)
          (
-          (put (this <- department) = department)
+          (put (this <- department) = deparment)
           (put (this <- subject) = subject)
           )
          (
@@ -43,3 +43,6 @@
 
 ;(new plt = lesson ("CS" "Language Theory"))
 ;(new-exp (var-exp plt) (var-exp lesson) ((str-exp "CS") (str-exp "Language Theory")
+
+
+

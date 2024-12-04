@@ -83,14 +83,14 @@
             ;search the properties and if the property name matches with the varname, update the property value
             (updated-properties
              (map (lambda (pair)
-                    (if (eq? (car pair) (cadr (cadr varname)))
+                    (if (eq? (car pair) varname)
                         (list (car pair) value)
                         pair))
                   properties))
             (updated-this
              (cons (car obj-value) (list (list 'properties updated-properties))))
             )
-         (put-helper obj-name updated-this env))      
+              (put-helper obj-name (list obj-type (list 'properties obj-properties)) env))      
        )
       ((or (null? env) (not (env-contains-name? varname env))) (screen-display "variable is not in the env"))
       ((scope-contains-name? varname (car env))
