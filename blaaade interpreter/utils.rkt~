@@ -63,6 +63,7 @@
     )
   )
 
+;put is update
 ;env = (((c 4) (d 4)) ((a 1) (b 2) (x 5)))
 ;update d = 5
 ;results env = (((c 4) (d 4)) ((a 1) (b 5) (x 5)))
@@ -70,6 +71,20 @@
   (lambda (varname value env)
     (cond
       ((or (null? env) (not (env-contains-name? varname env))) (screen-display "variable is not in the env"))
+      ((and (pair? varname) (eq? (car varname) 'obj-exp))
+       (let*
+           ((obj-name 'this)
+            (property-name (cadr (cadr varname)))
+            (obj (resolve-env obj-name env))
+            (obj-type (car obj))
+            (obj-properties
+             (map (lambda (pair)
+                    (if (eq? (car pair) property-name)
+                        (list property-name value)
+                        pair)) (cadr (cadr obj))))
+            )
+         (put-helper obj-name (list obj-type (list 'properties obj-properties)) env)
+       ))
       ((scope-contains-name? varname (car env))
        (cons (map (lambda (pair)
               (if (eq? (car pair) varname) (list varname value)
@@ -79,11 +94,25 @@
     )
   )
 
+;post is create
 (define post-helper
   (lambda (varname value env)
     (if (env-contains-name? varname env)
         (screen-display "Variable has been declared.")
         (cons (list (list varname value)) env))
+    )
+  )
+
+;add a new key-value pair to the first scope
+(define insert-helper
+  (lambda (varname value env)
+    (if (env-contains-name? varname env)
+        (screen-display "Variable has been declared.")
+        (if (null? env)
+            (list (list (list varname value)))
+            (cons (cons (list varname value) (car env)) (cdr env))
+            )
+        )
     )
   )
 

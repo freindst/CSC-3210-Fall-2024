@@ -27,18 +27,22 @@
           )
          (
           (talk () (out "we are talk about subject"))
-          (displaySubject () (out subject))
+          (displaySubject () (out (this <- subject)))
           )
          )
     (new plt = lesson ("CS" "Language Theory"))
     )
   )
 
-(parser code)
-;(execute code)
-;(null, (((lesson (source code)) rest-of-env)
+;(parser code)
+(execute code)
+;{null
+;((plt ((type lesson) (properties ((department "CS") (subject "Language Theory")))))
+;}
+;(parser '(new plt = lesson ("CS" "Language Theory")))
 
 ;(new plt = lesson ("CS" "Language Theory"))
 ;(new-exp (var-exp plt) (var-exp lesson) ((str-exp "CS") (str-exp "Language Theory")
+
 
 

@@ -63,12 +63,35 @@
     )
   )
 
+;put is update
 ;env = (((c 4) (d 4)) ((a 1) (b 2) (x 5)))
 ;update d = 5
 ;results env = (((c 4) (d 4)) ((a 1) (b 5) (x 5)))
+;(put-exp (obj-exp (var-exp department)) (var-exp deparment))
+;update this property department to be the resolved value from var-exp department
 (define put-helper
   (lambda (varname value env)
     (cond
+      ((and (pair? varname) (eq? (car varname) 'obj-exp))
+       (let*
+           (
+            (obj-name 'this)
+            (obj-value (resolve-env obj-name env))
+            ;go the the second item of obj-value, look for the varname in the list, and replace the value to be the value
+            ;((type lesson) (properties ((department ()) (subject ())
+            (properties (cadr (cadr obj-value)))
+            ;search the properties and if the property name matches with the varname, update the property value
+            (updated-properties
+             (map (lambda (pair)
+                    (if (eq? (car pair) varname)
+                        (list (car pair) value)
+                        pair))
+                  properties))
+            (updated-this
+             (cons (car obj-value) (list (list 'properties updated-properties))))
+            )
+              (put-helper obj-name (list obj-type (list 'properties obj-properties)) env))      
+       )
       ((or (null? env) (not (env-contains-name? varname env))) (screen-display "variable is not in the env"))
       ((scope-contains-name? varname (car env))
        (cons (map (lambda (pair)
@@ -79,6 +102,7 @@
     )
   )
 
+;post is create
 (define post-helper
   (lambda (varname value env)
     (if (env-contains-name? varname env)

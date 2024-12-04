@@ -1,5 +1,7 @@
 #lang racket
 (require "utils.rkt")
+(require "parser-v2.rkt")
+
 (define interpreter
   (lambda (parsed-code env)
     (cond
@@ -12,6 +14,8 @@
        (list (cadr parsed-code) env))
       ((eq? (car parsed-code) 'var-exp)
        (list (var-exp-helper parsed-code env) env))
+      ((eq? (car parsed-code) 'obj-exp)
+       (list (cadr parsed-code) env))
       ((eq? (car parsed-code) 'out-exp)
        (screen-display
         (get-exp-return (cadr parsed-code) env))
@@ -82,6 +86,7 @@
        )
       ;(func-exp ((var-exp x)) (exp....)) (num-exp 5))
       ((eq? (car parsed-code ) 'func-exp)
+       (println parsed-code)
        (let*
            ;lst1 = (x y z) lst2 = (a b c)) -> ((x a) (y b) (z c))
            ;combine
@@ -101,6 +106,24 @@
            ((new-pair (list (cadr parsed-code) (cddr parsed-code)))
             (new-env (cons (cons new-pair (car env)) (cdr env))))
          (list null new-env)
+       ))
+      ((eq? (car parsed-code) 'new-exp)
+       (let*
+           ((class-definition (resolve-env (cadr (caddr parsed-code)) env))
+            (this
+             (list
+                    (list 'type (cadr (caddr parsed-code)))
+                    (list
+                     'properties (map (lambda (arg) (list arg null)) (car class-definition)))))
+            (parsed-constructor (parser (cadr class-definition)))
+            (commands
+             (list 'func-exp
+                   (append (parser (car class-definition)) (list '(var-exp this)))
+                   parsed-constructor
+                   (append (get-list-item parsed-code 3) (list (list 'obj-exp this)))
+                   ))
+            )
+         (interpreter commands env)
        ))
       (else
        (if (eq? (car parsed-code) 'return-exp)
