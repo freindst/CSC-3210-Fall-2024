@@ -39,6 +39,9 @@
           (list 'call-exp (parser (cadr code)) (map parser (caddr code))))
          ((eq? (car code) 'this)
           (list 'obj-exp (parser (caddr code))))
+         ((eq? (cadr code) '<-)
+          (list 'prop-exp (parser (car code))
+                (parser (caddr code))))
          (else
        (cons (parser (car code)) (parser (cdr code))))))
       ;

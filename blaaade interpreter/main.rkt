@@ -30,16 +30,17 @@
           (displaySubject () (out (this <- subject)))
           )
          )
-    (new plt = lesson ("CS" "Language Theory"))
+    (new plt = lesson ("CS" "Language Theory")) ;insert plt into environment
+    (call (plt <- displaySubject) ())
     )
   )
 
-;(parser code)
-(execute code)
-;{null
-;((plt ((type lesson) (properties ((department "CS") (subject "Language Theory")))))
-;}
-;(parser '(new plt = lesson ("CS" "Language Theory")))
+(parser code)
+;(execute code)
 
-;(new plt = lesson ("CS" "Language Theory"))
-;(new-exp (var-exp plt) (var-exp lesson) ((str-exp "CS") (str-exp "Language Theory")
+(define code1 '(
+                (josh ppp (a) (out a))
+                (call ppp (1))
+                )
+  )
+(parser code1)

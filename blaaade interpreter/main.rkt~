@@ -22,7 +22,7 @@
     (mike lesson
          (department subject)
          (
-          (put (this <- department) = deparment)
+          (put (this <- department) = department)
           (put (this <- subject) = subject)
           )
          (
@@ -34,14 +34,12 @@
     )
   )
 
-(parser code)
-;(execute code)
+;(parser code)
+(execute code)
 ;{null
-;((lesson (type lesson) (properties ((department "CS") (subject "Language Theory"))))
+;((plt ((type lesson) (properties ((department "CS") (subject "Language Theory")))))
 ;}
-
+;(parser '(new plt = lesson ("CS" "Language Theory")))
 
 ;(new plt = lesson ("CS" "Language Theory"))
 ;(new-exp (var-exp plt) (var-exp lesson) ((str-exp "CS") (str-exp "Language Theory")
-
-
